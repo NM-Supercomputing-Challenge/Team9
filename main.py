@@ -32,4 +32,12 @@ if avgDailyUsage*365 <= 1800:        #max 1 kW DC System outpt
   print("ANNUAL PRODUCTION: about 1,745 kWh of AC")
   production = [122, 125, 156, 165, 179, 170, 157, 155, 146, 136, 121, 113]
   pricePayoff(1000)
+elif avgDailyUsage*365 >= 1800 and  avgDailyUsage*365 <= 2700:   #max 1.5 kW DC System output
+  print("SIZE: 1.5 kW DC System;")
+  print()
+  print("RECOMMENDED TYPE: Fixed (roof mount);")
+  print()
+  print("ANNUAL PRODUCTION: about 2,619 kWh of AC;")
+  production = [183, 188, 233, 248, 269, 256, 235, 232, 219, 205, 182, 169]
+  pricePayoff(1500)
   
