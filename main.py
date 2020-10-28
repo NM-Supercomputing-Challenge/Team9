@@ -82,3 +82,11 @@ elif avgDailyUsage*365 > 5400 and avgDailyUsage*365 <= 6300:
     print("ANNUAL PRODUCTION: about 6,111 kWh of AC;")
     production = [428, 439, 544, 578, 628, 597, 548, 542, 511, 477, 424, 395]
     pricePayoff(3500, production)
+elif avgDailyUsage*365 > 6300 and avgDailyUsage*365 <= 7200:
+    print("SIZE: 4 kW DC System;")
+    print()
+    print("RECOMMENDED TYPE: Fixed (roof mount);")
+    print()
+    print("ANNUAL PRODUCTION: about 6,984 kWh of AC;")
+    production = [489, 502, 622, 660, 717, 682, 626, 620, 584, 545, 484, 452]
+    pricePayoff(4000, production)
