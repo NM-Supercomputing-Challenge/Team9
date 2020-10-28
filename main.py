@@ -154,3 +154,47 @@ elif avgDailyUsage*365 > 13700 and avgDailyUsage*365 <= 14600:
     print("ANNUAL PRODUCTION: about 14,187 kWh of AC;")
     production = [990, 1016, 1265, 1339, 1456, 1387, 1276, 1262, 1189, 1108, 982, 916]
     pricePayoff(8000, production)
+elif avgDailyUsage*365 > 14600 and avgDailyUsage*365 <= 15500:
+    print("SIZE: 8.5 kW DC System;")
+    print()
+    print("RECOMMENDED TYPE: Fixed (open rack);")
+    print()
+    print("ANNUAL PRODUCTION: about 15,074 kWh of AC;")
+    production = [1052, 1080, 1345, 1423, 1547, 1474, 1356, 1341, 1263, 1177, 1043, 974]
+    pricePayoff(8500, production) 
+elif avgDailyUsage*365 > 15500 and avgDailyUsage*365 <= 16400:
+    print("SIZE: 9 kW DC System;")
+    print()
+    print("RECOMMENDED TYPE: Fixed (open rack);")
+    print()
+    print("ANNUAL PRODUCTION: about 15,960 kWh of AC;")
+    production = [1114, 1143, 1424, 1507, 1638, 1561, 1436, 1420, 1337, 1246, 1105, 1031]
+    pricePayoff(9000, production) 
+elif avgDailyUsage*365 > 16400 and avgDailyUsage*365 <= 17300:
+    print("SIZE: 9.5 kW DC System;")
+    print()
+    print("RECOMMENDED TYPE: Fixed (open rack);")
+    print()
+    print("ANNUAL PRODUCTION: about 16,847 kWh of AC;")
+    production = [1176, 1207, 1503, 1590, 1729, 1647, 1516, 1499, 1411, 1315, 1166, 1088]
+    pricePayoff(9500, production) 
+elif avgDailyUsage*365 > 17300 and avgDailyUsage*365 <= 18300:
+    print("SIZE: 10 kW DC System;")
+    print()
+    print("RECOMMENDED TYPE: Fixed (open rack);")
+    print()
+    print("ANNUAL PRODUCTION: about 17,734 kWh of AC;")
+    production = [1238, 1270, 1582, 1674, 1819, 1734, 1595, 1577, 1486, 1385, 1228, 1145]
+    pricePayoff(10000, production)
+
+#Plotting a bar chart to display monthly production of AC energy by PV Solar System:
+#List comprehension used for x coordinates
+x = [i for i in range(1, 13)]
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+plt.bar(x, production, tick_label = months, width = 0.8, color = ['red', 'green', 'blue'])
+#Labels for x and y axis:
+plt.xlabel('Month')
+plt.ylabel('kWh')
+#Title of the graph:
+plt.title('Monthly AC Energy produced by your PV Solar System')
+plt.show()
