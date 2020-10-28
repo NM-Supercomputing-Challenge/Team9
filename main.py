@@ -1,5 +1,9 @@
 import math
 import matplotlib.pyplot as plt
+print()
+#The max daily usage: 50!
+#Small house uses about 8-10 kWh at the cost of $1-2 per day
+#Large household uses about 35-50 kWh at the cost of $5.5 - 7 per day
 avgDailyUsage = float(input("Your average usage per day from your Utility bill: "))
 avgDailyCost = float(input("Your average electricity cost per day: "))
 print()
@@ -18,12 +22,18 @@ def pricePayoff(size):
   print()
   print("PAYOFF: It will take about {:.1f} years to pay off such system".format(netCost/(avgDailyCost*365)))
   print("from what you will save on your utility bills each year.")
-print()
-print("Based on the above, here are the specifications of your PV System:")
-print("*"*66)
-print()
+  print()
+  months = ['Jan:', 'Feb:', 'Mar:', 'Apr:', 'May:', 'Jun:', 'Jul:', 'Aug:', 'Sep:', 'Oct:','Nov:', 'Dec:']
+  print("Such PV System will produce the following amount of AC energy each month:")
+  for i in range(len(prod)):
+    print(months[i],prod[i])
+  print("Total:",sum(prod),'kWh')
 
-#Use PVWatts Calculator to get annual production made by 1 - 10 kW DC(direct current) Systems:
+print()
+print("Specifications of the PV System for area code = 87507:")
+print("*"*54)
+print()
+#Use PVWatts Calculator to get annual production made by 1 - 10 kW DC(direct current) PV Systems:
 if avgDailyUsage*365 <= 1800:        #max 1 kW DC System outpt
   print("SIZE: 1 kW DC System;")
   print()
@@ -31,13 +41,12 @@ if avgDailyUsage*365 <= 1800:        #max 1 kW DC System outpt
   print()
   print("ANNUAL PRODUCTION: about 1,745 kWh of AC")
   production = [122, 125, 156, 165, 179, 170, 157, 155, 146, 136, 121, 113]
-  pricePayoff(1000)
-elif avgDailyUsage*365 >= 1800 and  avgDailyUsage*365 <= 2700:   #max 1.5 kW DC System output
+  pricePayoff(1000, production)
+elif avgDailyUsage*365 > 1800 and  avgDailyUsage*365 <= 2700:   #max 1.5 kW DC System output
   print("SIZE: 1.5 kW DC System;")
   print()
   print("RECOMMENDED TYPE: Fixed (roof mount);")
   print()
   print("ANNUAL PRODUCTION: about 2,619 kWh of AC;")
   production = [183, 188, 233, 248, 269, 256, 235, 232, 219, 205, 182, 169]
-  pricePayoff(1500)
-  
+  pricePayoff(1500, production)
