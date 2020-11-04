@@ -31,3 +31,10 @@ def Deg2Rad(x): return (x*math.pi/180)
 # shadow in % = length of PV panel (= 1) * sin(angle in radians) * 100:
 def IdealModel(x): return round(math.sin(Deg2Rad(x))*100, 1)
 # round(num1, num2) rounds num1 to num2 precision
+#===================================================
+Angle = [i * 5.0 for i in range(0,37)]
+# Angle is a list created using a list comprehension method;
+# this is a list of values from 0 to 37, each multiplied by 5.0,
+# since 37 * 5 = 185,so this list has the following values:
+# [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, .... 180,0], see:
+print(Angle)
