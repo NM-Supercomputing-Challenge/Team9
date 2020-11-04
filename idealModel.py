@@ -41,13 +41,23 @@ print(Angle)
 # We then send each of these angles to our IdealModel() function above:
 IdealSampled = [IdealModel(i) for i in Angle]
 
+# Lab Data:
+LabAngleClear=[50.3,60.5,70.6,80.7,90.9,101.0,111.2,121.3,131.5,141.6]
+LabDataClear=[66.7,80.6,90.6,97.3,97.6,94.7,88.6,79.2,64.7,46.1]
+
+LabAngleCloudy=[60.7,70.9,81.0,91.2,101.3,111.4,121.6,131.7,141.8,152.0]
+LabDataCloudy=[78.2,83.7,84.9,91.0,91.0,88.2,72.5,57.1,42.2,26.7]
+
 # plot Ideal Model
 plt.plot(Angle,IdealSampled,label="Ideal PV Panel Model", color='red',linestyle='dashed',marker='o',markerfacecolor='red',markersize=4)
-#Labels for x and y axis:
+# plot lab data
+plt.plot(LabAngleClear,LabDataClear,label="Lab Data -Clear Skies",color='green',linestyle='dashed',marker='o',markerfacecolor='green',markersize=6)
+plt.plot(LabAngleCloudy,LabDataCloudy,label="Lab Data -Wispy Clouds",color='blue',linestyle='dashed',marker='o',markerfacecolor='blue',markersize=6)
+# Labels for x and y axis:
 plt.xlabel('Degrees')
 plt.ylabel('Percent')
 plt.grid()
 plt.legend()
-#Title of the graph:
+# Title of the graph:
 plt.title('Ideal Model of PV Panel')
 plt.show()

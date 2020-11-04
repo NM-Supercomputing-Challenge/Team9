@@ -1,2 +1,2 @@
-language="python3"
-run="idealModel.py"
+language = "python3"
+run = "idealModel.py"
