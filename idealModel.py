@@ -38,3 +38,16 @@ Angle = [i * 5.0 for i in range(0,37)]
 # since 37 * 5 = 185,so this list has the following values:
 # [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, .... 180,0], see:
 print(Angle)
+# We then send each of these angles to our IdealModel() function above:
+IdealSampled = [IdealModel(i) for i in Angle]
+
+# plot Ideal Model
+plt.plot(Angle,IdealSampled,label="Ideal PV Panel Model", color='red',linestyle='dashed',marker='o',markerfacecolor='red',markersize=4)
+#Labels for x and y axis:
+plt.xlabel('Degrees')
+plt.ylabel('Percent')
+plt.grid()
+plt.legend()
+#Title of the graph:
+plt.title('Ideal Model of PV Panel')
+plt.show()
