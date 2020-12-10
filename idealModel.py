@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 # binary numbers in order for the processor to generate an output)
 # can't convert angles into binary value;
 # Python uses radians instead of degrees
-# (radians represent the length of the arc,
-# or a part of a circle made by a given angle);
+# (It's because radian is a number, not a degree, and it can
+# be used to calculate the length of the arc, which is 
+# a part of a circle made by a given angle);
 # For this reason, we need a function that converts
 # degrees into radians; and we will call it: Deg2Rad.
 # Since radius (the length from the center of a circle to its edge) * 3.14159.... (pi) draws a half circle (180 degrees), then:
