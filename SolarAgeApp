@@ -1,0 +1,112 @@
+function pricePayoff(size) {
+  var netPVCost = Math.round(size*2.91 - size*2.91*36/100);
+  setText("totalPrice", '$'+Math.round(size*2.91));
+  setText("netPrice", '$'+netPVCost);
+  setText("payoffTime", Math.round(10*netPVCost/totalElectrCost)/10);
+  //Since Math.roud() rounds to the nearest integer, in order
+  //to get one decimal place, multiply the value by 10, round,
+  //and then devide it by 10.
+}
+
+var totalUsage = 0;
+var totalElectrCost = 0;
+
+onEvent("button", "click", function( ) {
+  totalUsage = Math.round(getNumber("avgDailyUsage")*365);
+  setNumber("annualUsage", totalUsage);
+  totalElectrCost = Math.round(getNumber("avgDailyCost")*365);
+  setText("annualCost", '$'+totalElectrCost);
+
+  if (totalUsage <= 1800) {
+    setText("sizePV", "1 kW");
+    setText("annualPVEnergy", "1,745");
+    pricePayoff(1000);
+  } else if ((totalUsage > 1800) && (totalUsage <= 2700)) {
+    setText("sizePV", "1.5 kW");
+    setText("annualPVEnergy", "2,619");
+    pricePayoff(1500);
+  } else if ((totalUsage > 2700) && (totalUsage <= 3500)) {
+    setText("sizePV", "2 kW");
+    setText("annualPVEnergy", "3,492");
+    pricePayoff(2000);
+  } else if ((totalUsage > 3500) && (totalUsage <= 4500)) {
+    setText("sizePV", "2.5 kW");
+    setText("annualPVEnergy", "4,365");
+    pricePayoff(2500);
+  } else if ((totalUsage > 4500) && (totalUsage <= 5400)) {
+    setText("sizePV", "3 kW");
+    setText("annualPVEnergy", "5,238");
+    pricePayoff(3000);
+  } else if ((totalUsage > 5400) && (totalUsage <= 6300)) {
+    setText("sizePV", "3.5 kW");
+    setText("annualPVEnergy", "6,111");
+    pricePayoff(3500);
+  } else if ((totalUsage > 6300) && (totalUsage <= 7200)) {
+    setText("sizePV", "4 kW");
+    setText("annualPVEnergy", "6,984");
+    pricePayoff(4000);
+  } else if ((totalUsage > 7200) && (totalUsage <= 8100)) {
+    setText("sizePV", "4.5 kW");
+    setText("annualPVEnergy", "7,857");
+    pricePayoff(4500);
+  } else if ((totalUsage > 8100) && (totalUsage <= 9000)) {
+    setText("sizePV", "5 kW");
+    setText("annualPVEnergy", "8,730");
+    pricePayoff(5000);
+  } else if ((totalUsage > 9000) && (totalUsage <= 9900)) {
+    setText("sizePV", "5.5 kW");
+    setText("annualPVEnergy", "9,603");
+    pricePayoff(5500);
+  } else if ((totalUsage > 9900) && (totalUsage <= 10800)) {
+    setText("sizePV", "6 kW");
+    setText("annualPVEnergy", "10,476");
+    pricePayoff(6000);
+  } else if ((totalUsage > 10800) && (totalUsage <= 11700)) {
+    setText("sizePV", "6.5 kW");
+    setText("annualPVEnergy", "11,349");
+    pricePayoff(6500);
+  } else if ((totalUsage > 11700) && (totalUsage <= 12800)) {
+    setText("sizePV", "7 kW");
+    setText("annualPVEnergy", "12,414");
+    pricePayoff(7000);
+  } else if ((totalUsage > 12800) && (totalUsage <= 13700)) {
+    setText("sizePV", "7.5 kW");
+    setText("annualPVEnergy", "13,300");
+    pricePayoff(7500);
+  } else if ((totalUsage > 13700) && (totalUsage <= 14600)) {
+    setText("sizePV", "8 kW");
+    setText("annualPVEnergy", "14,187");
+    pricePayoff(8000);
+  } else if ((totalUsage > 14600) && (totalUsage <= 15500)) {
+    setText("sizePV", "8.5 kW");
+    setText("annualPVEnergy", "15,074");
+    pricePayoff(8500);
+  } else if ((totalUsage > 15500) && (totalUsage <= 16400)) {
+    setText("sizePV", "9 kW");
+    setText("annualPVEnergy", "15,960");
+    pricePayoff(9000);
+  } else if ((totalUsage > 16400) && (totalUsage <= 17300)) {
+    setText("sizePV", "9.5 kW");
+    setText("annualPVEnergy", "16,847");
+    pricePayoff(9500);
+  } else if ((totalUsage > 17300) && (totalUsage <= 18300)) {
+    setText("sizePV", "10 kW");
+    setText("annualPVEnergy", "17,734");
+    pricePayoff(10000);
+  }
+  else {
+    setScreen("screen2");
+    onEvent("tryAgain", "click", function( ) {
+      setScreen("screen1");
+    });
+    setText("avgDailyUsage", "");
+    setText("avgDailyCost", "");
+    setText("annualUsage", "");
+    setText("annualCost", "");
+    setText("sizePV", "");
+    setText("annualPVEnergy", "");
+    setText("totalPrice", "");
+    setText("netPrice", "");
+    setText("payoffTime", " ");
+  }  
+});
