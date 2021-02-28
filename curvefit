@@ -1,0 +1,124 @@
+#=====          Curve Fit Lab data         =====
+#.   1) We need to find angle of sun, angle with peak power.
+#.      Lab device just goes from 0 deg to 90 deg.  The
+#.      actual 90 degree point to the sun is somewhere in 
+#.      that range.  We need to find it.
+#.   2) We discover a lot of the hidden information in our
+#.      data by a process called "curve fitting".  That's what
+#.      this program is about.
+#.   3) We know ideally that, if we define our angle to be 90
+#.      deg when pointed at sun, the power will follow a Sine
+#.      function.
+#.   4) We also know that the panel itself will accept less of
+#.      the sunlight falling on it as the angle gets more
+#.      skewed.  So our model will have term for that.
+#.   5) The curve fitting routine is clever enough that it can
+#.      figure out how much of each effect to put in result.
+#.   6) Given the above, we make the general model like this:
+#.          PV_Panel_Power_Percentage(angle) =
+#.                100.0*Sin(angle + shift)
+#.             *( (amplitude/(1+curve))*(Sin(angle)+curve))
+#.       which looks like a mess ... but, 
+#.       there are two Sin functions, one for the basic 
+#.       shading we've talked about and one for the panel
+#.       angle sensitivity.  There are 3 'parameters'
+#.       (variables that control the shape of the function).
+#.         amplitude: how high does it go - 1.0 means 100%
+#.         curve: how does shape change near 0 and 180. 0 means
+#.             its perfect sin like out ideal.
+#.         shift: what is the angle of the peak.
+#.------------------------------------------------
+from scipy.optimize import curve_fit
+from numpy import vectorize
+import math
+import matplotlib.pyplot as plt
+#===== Helper functions for manipulating data=====
+pi=math.pi # just to eliminate some typing
+def Deg2Rad(x):  return (math.pi*x/180.0) # Deg2Rad convert degrees -> radians
+def Sine(x): return math.sin(Deg2Rad(x)) # Sine function is math.sin of degrees
+def RoundN(x,n):  return ( round(x*10.0**n)/10.0**n) # Round to N decimal places
+#-------------------------------------------------
+# ===== Function to find angle for max response in lab data =====
+#.   This scans the data and finds largest value 
+#.       then returns the index pointing to largest value
+#.   Useful to find the angle closest to the maximum response in the data
+#.       "curve_fit" needs guesses for values, like the angle for the peak
+#        response at 90 degrees.  If we know this angle of maximum in lab 
+#        data we can compute best guess angle offset to start the curve_fit
+def GetMaxAngle(angle,data):
+  max_value = max(data)
+  max_index = data.index(max_value)
+  return angle[max_index]
+#------------------------------------------------
+#=====        Enter the data from panel     =====
+LabAngle = [i*10.0 for i in range(0,10)] #. 0 to 90 degrees in 10 degree increments
+LabDataClear = [66.7,80.6,90.6,97.3,97.6,94.7,88.6,79.2,64.7,46.1] # actual lab data
+NLabData = len(LabDataClear) # how many data points?
+#----------------------------------------------------------
+#=====    Define the parameterized model and intial   =====
+def pFitModel(x, Efficiency, Scatter, AngleShift): 
+  return Efficiency*Sine(x + AngleShift)*((Sine(x + AngleShift)+Scatter)/(1.0 + Scatter))*100
+#.  We need to define our realistic function to fit to data
+#.  This function has the ideal function plus a scatter function
+#.  The overall Efficiency and amount of Scatter are parameters in this function
+#.  It also computes AngleShift, which is how far we have to shift the data angles 
+#.     to center the lab data at 90 degrees (straight at sun)
+#.  Parameters this functon needs: Efficiency, Scatter, AngleShift
+#. "curve_fit" function needs the model function to be 'vectorized': the function
+#.    must be able to take a list as input and generate a list as output.
+#
+#  Define the vectorized version
+vFitModel = vectorize(pFitModel) # this syntax came from the doc notes
+# "curve_fit" works more reliably if we have intial guesses for parameters
+#
+MaxAngleGuess = GetMaxAngle(LabAngle, LabDataClear) # If we find the angle in the 
+#      data that gives largest output, that is close to pointing at sun, so we use 
+#      that value to compute the offset to make the lab angles centered so that
+#.     max response is near 90 degrees.  The curve fit procedure will adjust this
+#.     to make it precise.
+#
+guess = [ 1.0, 0.0, 90-MaxAngleGuess] # Make following guesses:
+#.     1) Efficiency is 1.0 ... a perfect panel
+#.     2) Scatter is zero ... panel uses all the light it gets
+#.     3) AngleShift is 90-MaxAngleGuess ... this shifts data so max is at 90 deg
+#------------------------------------------------------------------
+#=====    Invoke the curve fit procedure according to docs    =====
+#.  Routine returns the paramaters in the 'params' list
+#.     and an error term in the 'covariance'
+#.  We send the parameterized model function, the x,y data, and the guesses
+params, covariance = curve_fit(f=vFitModel,xdata=LabAngle,ydata=LabDataClear,p0=guess,bounds=(-10000,10000))
+#.  Now we extract the parameters of interest
+FM_efficiency=RoundN(params[0],3)
+FM_scatter=RoundN(params[1],3)
+FM_angleshift=RoundN(params[2],3)
+#.  and print them out to include in plotting program
+print(" FM means Fitted Model ")
+print("FM_efficiency = ",FM_efficiency)
+print("FM_scatter = ",FM_scatter)
+print("FM_angleshift = ",FM_angleshift)
+
+LabAngleShifted = [LabAngle[i]+FM_angleshift for i in range(0,10)]
+print("Lab Angle Shifted = ", LabAngleShifted)
+print("Lab Data ", LabDataClear)
+#===== Define the simplified Fit Model for plotting
+#.  and sample at 5 degree angle increments
+#.  Zero out the FM_angleshift parameter here because its now included in the 
+#.     lab angle data.
+def FitModel(x): 
+   return pFitModel(x,FM_efficiency,FM_scatter,0.0)
+IdealModelSampled = [100*Sine(i*5) for i in range(0,37) ]
+FitModelSampled = [FitModel(i*5) for i in range(0,37) ]
+Angle = [(i*5) for i in range(0,37) ]
+#------------------------------------------------------
+#=====   Plot Ideal, Lab Data, and FitModel Data  ======
+plt.plot(Angle,IdealModelSampled,label="Ideal PV Panel Model", color='red',linestyle='solid',marker='o',markerfacecolor='red',markersize=4)# plot lab data
+plt.plot(Angle,FitModelSampled,label="LMS Fit PV Panel Model", color='grey',linestyle='solid',marker='o',markerfacecolor='black',markersize=4)# plot lab data
+plt.plot(LabAngleShifted,LabDataClear,label="Lab Data -Clear Skies",color='green',linestyle='dashed',marker='v',markerfacecolor='green',markersize=8)
+plt.xlabel('Degrees')
+plt.ylabel('Percent')
+plt.grid()
+plt.legend()
+#Title of the graph:
+plt.title('Ideal Model of PV Panel vs Incident Angle')
+plt.show()
+plt.savefig('PVPanelPlot.png')
